@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_STL=c++_shared"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+        }
+    }
+
+    buildFeatures {
+        prefab true
+        prefabPublishing true
+    }
+
+    prefab {
+        "uvc" {
+            headers "src/main/cpp/include"
+        }
+    }
+
+    packagingOptions {
+        exclude("**/libc++_shared.so")
+        exclude("**/libjpeg.so")
+        exclude("**/libturbojpeg.so")
+        exclude("**/libusb1.0.so")
+        exclude("**/libuvc.so")
+    }
+}
+
+dependencies {
+    api 'com.github.chancezeus:libusb-android-prefab:1.0.24'
+    api 'com.github.chancezeus:libjpeg-turbo-android-prefab:2.0.90'
+}
